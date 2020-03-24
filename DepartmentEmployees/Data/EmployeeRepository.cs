@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.Data.SqlClient;
 using DepartmentsEmployees.Models;
 
-namespace DepartmentEmployees.Data
+namespace DepartmentsEmployees.Data
 {
     /// <summary>
     /// an object to contain all database interactions
@@ -73,12 +73,18 @@ namespace DepartmentEmployees.Data
                     int empFirstNameColumn = reader.GetOrdinal("FirstName");
                     string empFirstNameValue = reader.GetString(empFirstNameColumn);
 
+                    int departmentIdColumn = reader.GetOrdinal("departmentId");
+                    int departmentIdValue = reader.GetInt32(departmentIdColumn);
+
                     // Now lets create a new employee object using the data from the database
                     Employee employee = new Employee
                     {
                         Id = idValue,
                         FirstName = empFirstNameValue,
                         LastName = empLastNameValue,
+                        DepartmentId = departmentIdValue,
+                        Department = null
+                        
 
                     };
 
@@ -107,7 +113,7 @@ namespace DepartmentEmployees.Data
                          conn.Open();
                          using (SqlCommand cmd = conn.CreateCommand())
                     {
-                        cmd.CommandText = "SELECT FirstName, LastName, FROM Employe WHERE Id =@id";
+                        cmd.CommandText = "SELECT e.Id, e.FirstName, e.LastName, e.depatmentId, d.deptName FROM Employe WHERE Id =@id";
                         cmd.Parameters.Add(new SqlParameter("@id", id));
                         SqlDataReader reader = cmd.ExecuteReader();
 
@@ -115,13 +121,34 @@ namespace DepartmentEmployees.Data
 
                 // If we only expect a single row back from the database we dont need a hole loop
                 if (reader.Read())
-                {
-                    employee = new Employee
                     {
-                        Id = id,
-                        FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
-                        LastName = reader.GetString(reader.GetOrdinal("LastName")),
-                    };
+                        int idColumnPosition = reader.GetOrdinal("Id");
+                        int IdValue = reader.GetInt32(idColumnPosition);
+
+                        int firstNameColumnPosition = reader.GetOrdinal("firstName");
+                        string firstNameValue = reader.GetString(firstNameColumnPosition);
+
+                        int lastNameColumnPosition = reader.GetOrdinal("lastName");
+                        string lastNameValue = reader.GetString(lastNameColumnPosition);
+
+                        int departmentColumnPosition = reader.GetOrdinal("Department Name");
+                        string departmentValue = reader.GetString(departmentColumnPosition);
+
+                        int departmentIdColumnPosition = reader.GetOrdinal("departmentId");
+                        int departmentIdValue = reader.GetInt32(departmentIdColumnPosition);
+
+                        employee = new Employee
+                        {
+                            Id = IdValue,
+                            FirstName = firstNameValue,
+                            LastName = lastNameValue,
+                            DepartmentId = departmentIdValue,
+                            Department = new Department
+                            {
+                                DeptName = departmentValue,
+                                Id = departmentIdValue
+                            }
+                        };
                 }
 
                     reader.Close();
@@ -159,6 +186,8 @@ namespace DepartmentEmployees.Data
                         cmd.Parameters.Add(new SqlParameter("@firstName", employee.FirstName));
                         cmd.Parameters.Add(new SqlParameter("@lastName", employee.LastName));
                         cmd.Parameters.Add(new SqlParameter("@departmentId", employee.DepartmentId));
+                        cmd.Parameters.Add(new SqlParameter("@departmentId", employee.DepartmentId));    
+
                         int id = (int)cmd.ExecuteScalar();
 
                         employee.Id = id;
@@ -187,6 +216,7 @@ namespace DepartmentEmployees.Data
                         cmd.Parameters.Add(new SqlParameter("@firstName", employee.FirstName));
                         cmd.Parameters.Add(new SqlParameter("@lastName", employee.LastName));
                         cmd.Parameters.Add(new SqlParameter("@departmentId", employee.DepartmentId));
+                        cmd.Parameters.Add(new SqlParameter("@id", id));
 
                         cmd.Parameters.Add(new SqlParameter("@id", id));
 
