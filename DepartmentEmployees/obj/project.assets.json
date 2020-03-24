@@ -4977,9 +4977,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Daniel\\source\\repos\\DepartmentEmployees\\DepartmentEmployees\\DepartmentEmployees.csproj",
-      "projectName": "DepartmentEmployees",
-      "projectPath": "C:\\Users\\Daniel\\source\\repos\\DepartmentEmployees\\DepartmentEmployees\\DepartmentEmployees.csproj",
+      "projectUniqueName": "C:\\Users\\Daniel\\source\\repos\\DepartmentEmployees\\DepartmentEmployees\\DepartmentsEmployees.csproj",
+      "projectName": "DepartmentsEmployees",
+      "projectPath": "C:\\Users\\Daniel\\source\\repos\\DepartmentEmployees\\DepartmentEmployees\\DepartmentsEmployees.csproj",
       "packagesPath": "C:\\Users\\Daniel\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Daniel\\source\\repos\\DepartmentEmployees\\DepartmentEmployees\\obj\\",
       "projectStyle": "PackageReference",
