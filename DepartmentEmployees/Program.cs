@@ -55,7 +55,7 @@ namespace DepartmentsEmployees
 
                         Department singleDepartment = departments.GetDepartmentById(deptChoice);
 
-                        Console.WriteLine($"{singleDepartment.Id} {singleDepartment.DeptName}");
+                        Console.WriteLine($"{singleDepartment.Id}. {singleDepartment.DeptName}");
                         break;
 
                     case 3:
@@ -75,15 +75,15 @@ namespace DepartmentsEmployees
 
                     case 4:
 
-                        Console.WriteLine("Enter the name of the department you wish to update.");
-                        var deptName = Console.ReadLine();
+                        //Console.WriteLine("Enter the name of the department you wish to update.");
+                        //var deptName = Console.ReadLine();
 
                         break;
 
                     case 5:
 
                         Console.WriteLine("Enter the Id of the deptarment you would like to delete.");
-                        var deleteChoice = int.Parse(Console.ReadeLine());
+                        var deleteChoice = int.Parse(Console.ReadLine());
 
                         departments.DeleteDepartment(deleteChoice);
                         Console.WriteLine($"Department with Id of {deleteChoice} was deleted.");
@@ -99,55 +99,73 @@ namespace DepartmentsEmployees
 
                         foreach (Employee e in allEmployees)
                         {
-                            Console.WriteLine($"{e.FirstName} {e.LastName}");
+                            Console.WriteLine($"{e.Id}. {e.FirstName} {e.LastName}");
                         }
 
                         break;
 
-                    case 7: 
+                    case 7:
 
-                        Console
+                        Console.WriteLine("Enter employee by Id.");
+                        var employeeId = int.Parse(Console.ReadLine());
+                        Console.WriteLine($"Getting employee {employeeId}");
+
+                        Employee singleEmployee = employees.GetEmployeeById(employeeId);
+
+                        Console.WriteLine($"{singleEmployee.Id} {singleEmployee.FirstName} {singleEmployee.LastName}");
+
+                        break;
+
+                    case 8:
+
+                        Console.WriteLine("Enter the first name of new employee.");
+                        var eFirstName = Console.ReadLine();
+
+                        Console.WriteLine("Enter the last name of new employee.");
+                        var eLastName = Console.ReadLine();
+
+                        Console.WriteLine("Enter departmentId of new employee.");
+                        var eDeptName = int.Parse(Console.ReadLine());
 
 
-                        
+                        Employee newEmployee = new Employee
+                        {
+                           FirstName = eFirstName,
+                            LastName = eLastName,
+                            DepartmentId = eDeptName
+                        };
+
+                        employees.AddEmployee(newEmployee);
+                        Console.WriteLine($"Add new {eFirstName} {eLastName} to employees.");
 
 
+                        break;
 
+                    case 9:
 
+                        //Console.WriteLine("Enter the name of the department you wish to update.");
+                        //var deptName = Console.ReadLine();
+
+                        break;
+
+                    case 10:
+
+                        Console.WriteLine("Enter the Id of the employee you would like to delete.");
+                        var deleteEmployee = int.Parse(Console.ReadLine());
+
+                        employees.DeleteEmployee(deleteEmployee);
+                        Console.WriteLine($"Department with Id of {deleteEmployee} was deleted.");
+
+                        break;
+
+                    default:
+                        break;
 
 
 
                 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         }
