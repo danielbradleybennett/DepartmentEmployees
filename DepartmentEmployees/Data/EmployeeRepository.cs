@@ -49,7 +49,7 @@ namespace DepartmentsEmployees.Data
                 // We must use commands too
                 using SqlCommand cmd = conn.CreateCommand();
                 //Here we set up the command with teh SQL we want to exectue before we execute it
-                cmd.CommandText = "SELECT Id, FirstName, LastName,  FROM Employee";
+                cmd.CommandText = "SELECT Id, FirstName, LastName, DepartmentId  FROM Employee";
 
                 // Exectue the SQL in the database and get a reader that will give us acces to the date
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -73,7 +73,7 @@ namespace DepartmentsEmployees.Data
                     int empFirstNameColumn = reader.GetOrdinal("FirstName");
                     string empFirstNameValue = reader.GetString(empFirstNameColumn);
 
-                    int departmentIdColumn = reader.GetOrdinal("departmentId");
+                    int departmentIdColumn = reader.GetOrdinal("DepartmentId");
                     int departmentIdValue = reader.GetInt32(departmentIdColumn);
 
                     // Now lets create a new employee object using the data from the database
@@ -113,7 +113,7 @@ namespace DepartmentsEmployees.Data
                          conn.Open();
                          using (SqlCommand cmd = conn.CreateCommand())
                     {
-                        cmd.CommandText = "SELECT e.Id, e.FirstName, e.LastName, e.depatmentId, d.deptName FROM Employe WHERE Id =@id";
+                        cmd.CommandText = "SELECT Id, FirstName, LastName, DepartmentId FROM Employee WHERE Id =@id";
                         cmd.Parameters.Add(new SqlParameter("@id", id));
                         SqlDataReader reader = cmd.ExecuteReader();
 
@@ -125,16 +125,13 @@ namespace DepartmentsEmployees.Data
                         int idColumnPosition = reader.GetOrdinal("Id");
                         int IdValue = reader.GetInt32(idColumnPosition);
 
-                        int firstNameColumnPosition = reader.GetOrdinal("firstName");
+                        int firstNameColumnPosition = reader.GetOrdinal("FirstName");
                         string firstNameValue = reader.GetString(firstNameColumnPosition);
 
-                        int lastNameColumnPosition = reader.GetOrdinal("lastName");
+                        int lastNameColumnPosition = reader.GetOrdinal("LastName");
                         string lastNameValue = reader.GetString(lastNameColumnPosition);
 
-                        int departmentColumnPosition = reader.GetOrdinal("Department Name");
-                        string departmentValue = reader.GetString(departmentColumnPosition);
-
-                        int departmentIdColumnPosition = reader.GetOrdinal("departmentId");
+                        int departmentIdColumnPosition = reader.GetOrdinal("DepartmentId");
                         int departmentIdValue = reader.GetInt32(departmentIdColumnPosition);
 
                         employee = new Employee
@@ -143,11 +140,7 @@ namespace DepartmentsEmployees.Data
                             FirstName = firstNameValue,
                             LastName = lastNameValue,
                             DepartmentId = departmentIdValue,
-                            Department = new Department
-                            {
-                                DeptName = departmentValue,
-                                Id = departmentIdValue
-                            }
+                           
                         };
                 }
 
@@ -180,13 +173,13 @@ namespace DepartmentsEmployees.Data
                     {
                         // these SQL parameters are annoying. Why cant we use string interpolation
                         // sql injection
-                        cmd.CommandText = @"INSERT INTO Employee (FirstName, LastName, DepartmentId)
+                        cmd.CommandText = @"INSERT INTO Employee (firstName, lastName, departmentId)
                             OUTPUT INSERTED.Id 
                             Values (@firstName, @lastName, @departmentId)";
                         cmd.Parameters.Add(new SqlParameter("@firstName", employee.FirstName));
                         cmd.Parameters.Add(new SqlParameter("@lastName", employee.LastName));
                         cmd.Parameters.Add(new SqlParameter("@departmentId", employee.DepartmentId));
-                        cmd.Parameters.Add(new SqlParameter("@departmentId", employee.DepartmentId));    
+                          
 
                         int id = (int)cmd.ExecuteScalar();
 
